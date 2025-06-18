@@ -1,0 +1,40 @@
+<!-- templates/index.html -->
+<html>
+<head><script src="https://unpkg.com/htmx.org@1.9.5"></script></head>
+<body>
+  <div style="display: flex;">
+    <div style="flex: 1; border-right: 1px solid #ccc; padding: 1rem;">
+      <h3>Chat</h3>
+      <form hx-post="/chat" hx-swap="beforeend" hx-target="#chat-log">
+        <input name="message" />
+        <button type="submit">Send</button>
+      </form>
+      <div id="chat-log"></div>
+    </div>
+
+    <div style="flex: 1; padding: 1rem;">
+      <h3>Todos</h3>
+      <form hx-post="/add" hx-target="#todo-items" hx-swap="innerHTML">
+        <input name="task" required />
+        <button type="submit">Add</button>
+    </form>
+
+        <div id="todo-list">
+        <ul id="todo-items">
+            {% for todo in todos %}
+            <li>{{ todo.task }} {% if todo.done %}(done){% endif %}</li>
+            {% endfor %}
+        </ul>
+        </div>
+    </div>
+  </div>
+</body>
+</html>
+
+<script>
+  document.body.addEventListener('htmx:afterRequest', function(evt) {
+    if (evt.target.tagName === 'FORM') {
+      evt.target.reset();
+    }
+  });
+</script>

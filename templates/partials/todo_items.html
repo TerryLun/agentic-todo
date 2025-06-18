@@ -1,0 +1,4 @@
+<!-- templates/partials/todo_items.html -->
+{% for todo in todos %}
+  <li>{{ todo.task }} {% if todo.done %}(done){% endif %}</li>
+{% endfor %}
