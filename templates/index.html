@@ -5,7 +5,7 @@
   <div style="display: flex;">
     <div style="flex: 1; border-right: 1px solid #ccc; padding: 1rem;">
       <h3>Chat</h3>
-      <form hx-post="/chat" hx-swap="beforeend" hx-target="#chat-log">
+      <form hx-post="/chat" hx-swap="beforeend" hx-target="#chat-log" action="/chat">
         <input name="message" />
         <button type="submit">Send</button>
       </form>
@@ -23,11 +23,11 @@
         <ul id="todo-items">
             {% for todo in todos %}
               <li>
-              <form hx-post="/edit/{{ todo.id }}" hx-target="#todo-items" hx-swap="innerHTML" style="display: inline;">
+              <form hx-post="/edit/{{ todo.id }}" hx-target="#todo-list" hx-swap="outerHTML" style="display: inline;">
                 <input name="task" value="{{ todo.task }}" />
                 <button type="submit">Save</button>
               </form>
-              <form hx-post="/delete/{{ todo.id }}" hx-target="#todo-items" hx-swap="innerHTML" style="display: inline;">
+              <form hx-post="/delete/{{ todo.id }}" hx-target="#todo-list" hx-swap="outerHTML" style="display: inline;">
                 <button type="submit">🗑️</button>
               </form>
             </li>
@@ -41,8 +41,9 @@
 
 <script>
   document.body.addEventListener('htmx:afterRequest', function(evt) {
-    if (evt.target.tagName === 'FORM') {
-      evt.target.reset();
+    console.log('htmx:afterRequest', evt);
+    if (evt.target.tagName === "FORM" && evt.target.action.includes("/chat")) {
+      htmx.ajax("GET", "/partial/todos", "#todo-list");
     }
   });
 </script>
