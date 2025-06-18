@@ -19,3 +19,18 @@ def add_todo(task: str):
     with Session(engine) as session:
         session.add(Todo(task=task))
         session.commit()
+
+def update_todo(todo_id: int, new_task: str):
+    with Session(engine) as session:
+        todo = session.get(Todo, todo_id)
+        if todo:
+            todo.task = new_task
+            session.add(todo)  # Optional but good practice
+            session.commit()
+
+def delete_todo(todo_id: int):
+    with Session(engine) as session:
+        todo = session.get(Todo, todo_id)
+        if todo:
+            session.delete(todo)
+            session.commit()

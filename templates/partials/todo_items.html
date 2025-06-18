@@ -1,4 +1,12 @@
 <!-- templates/partials/todo_items.html -->
 {% for todo in todos %}
-  <li>{{ todo.task }} {% if todo.done %}(done){% endif %}</li>
+  <li>
+    <form hx-post="/edit/{{ todo.id }}" hx-target="#todo-items" hx-swap="innerHTML" style="display: inline;">
+      <input name="task" value="{{ todo.task }}" />
+      <button type="submit">Save</button>
+    </form>
+    <form hx-post="/delete/{{ todo.id }}" hx-target="#todo-items" hx-swap="innerHTML" style="display: inline;">
+      <button type="submit">🗑️</button>
+    </form>
+  </li>
 {% endfor %}
