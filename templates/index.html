@@ -14,10 +14,15 @@
 
     <div style="flex: 1; padding: 1rem;">
       <h3>Todos</h3>
-      <form hx-post="/add" hx-target="#todo-items" hx-swap="innerHTML">
+      <form 
+        hx-post="/add" 
+        hx-target="#todo-items" 
+        hx-swap="innerHTML"
+        hx-on::after-request="this.reset()"
+      >
         <input name="task" required />
         <button type="submit">Add</button>
-    </form>
+      </form>
 
         <div id="todo-list">
         <ul id="todo-items">
