@@ -35,7 +35,7 @@ tools = [add_item, delete_item, update_item]
 llm = ChatOpenAI(model="gpt-3.5-turbo", temperature=0)
 
 prompt = ChatPromptTemplate.from_messages([
-    ("system", "You are a helpful todo assistant. Always use the tools."),
+    ("system", "You are a helpful todo assistant. Please read carefully what user's intention and use tools when appropriate."),
     MessagesPlaceholder("chat_history"),
     ("user", "{input}"),
     MessagesPlaceholder("agent_scratchpad"),

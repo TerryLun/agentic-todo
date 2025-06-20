@@ -5,7 +5,13 @@
   <div style="display: flex;">
     <div style="flex: 1; border-right: 1px solid #ccc; padding: 1rem;">
       <h3>Chat</h3>
-      <form hx-post="/chat" hx-swap="beforeend" hx-target="#chat-log" action="/chat">
+      <form 
+        hx-post="/chat" 
+        hx-swap="beforeend" 
+        hx-target="#chat-log" 
+        action="/chat" 
+        hx-on::after-request="this.reset()"
+      >
         <input name="message" />
         <button type="submit">Send</button>
       </form>
