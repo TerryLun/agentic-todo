@@ -3,7 +3,7 @@
 
 # main.py
 from fastapi import FastAPI, Request, Form, Path
-from fastapi.responses import HTMLResponse
+from fastapi.responses import HTMLResponse, StreamingResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 
@@ -45,10 +45,9 @@ async def delete(request: Request, todo_id: int):
     html = templates.get_template("partials/todo_items.html").render(todos=todos)
     return HTMLResponse(content=html)
 
-@app.post("/chat", response_class=HTMLResponse)
+@app.post("/chat")
 async def chat(request: Request, message: str = Form(...)):
-    response = handle_chat(message)
-    return HTMLResponse(f"<div><b>You:</b> {message}<br><b>Agent:</b> {response}</div>")
+    return StreamingResponse(handle_chat(message), media_type="text/plain")
 
 @app.get("/partial/todos", response_class=HTMLResponse)
 async def partial_todo(request: Request):

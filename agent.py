@@ -1,7 +1,6 @@
 # agent.py
 from langchain_openai import ChatOpenAI
 from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
-from langchain_core.runnables import Runnable
 from langchain.agents import create_openai_functions_agent, AgentExecutor
 from langchain.tools import tool
 from models import add_todo, delete_todo, get_todos, update_todo
@@ -41,12 +40,16 @@ prompt = ChatPromptTemplate.from_messages([
     MessagesPlaceholder("agent_scratchpad"),
 ])
 
-agent_runnable: Runnable = create_openai_functions_agent(llm=llm, tools=tools, prompt=prompt)
+agent_runnable = create_openai_functions_agent(llm=llm, tools=tools, prompt=prompt)
 agent_executor: AgentExecutor = AgentExecutor(agent=agent_runnable, tools=tools, verbose=True)
 
-def handle_chat(user_input: str) -> str:
-    result = agent_executor.invoke({
-        "input": user_input,
-        "chat_history": [],
-    })
-    return result["output"]
+async def handle_chat(user_input: str):
+    """Handles chat input and streams the agent's response."""
+    async for event in agent_executor.astream_events(
+        {"input": user_input, "chat_history": []}, version="v1"
+    ):
+        kind = event["event"]
+        if kind == "on_chat_model_stream":
+            chunk = event["data"].get("chunk")
+            if chunk and chunk.content:
+                yield chunk.content

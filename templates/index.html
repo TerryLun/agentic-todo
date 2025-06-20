@@ -5,14 +5,8 @@
   <div style="display: flex;">
     <div style="flex: 1; border-right: 1px solid #ccc; padding: 1rem;">
       <h3>Chat</h3>
-      <form 
-        hx-post="/chat" 
-        hx-swap="beforeend" 
-        hx-target="#chat-log" 
-        action="/chat" 
-        hx-on::after-request="this.reset()"
-      >
-        <input name="message" />
+      <form id="chat-form">
+        <input id="message-input" name="message" autocomplete="off" />
         <button type="submit">Send</button>
       </form>
       <div id="chat-log"></div>
@@ -51,10 +45,60 @@
 </html>
 
 <script>
+  // This script remains to refresh the todo list when it's updated via its own form.
   document.body.addEventListener('htmx:afterRequest', function(evt) {
-    console.log('htmx:afterRequest', evt);
-    if (evt.target.tagName === "FORM" && evt.target.action.includes("/chat")) {
+    const taskForm = evt.target.closest('form[hx-post^="/add"], form[hx-post^="/edit"], form[hx-post^="/delete"]');
+    if (taskForm) {
       htmx.ajax("GET", "/partial/todos", "#todo-list");
+    }
+  });
+
+  // New script to handle chat form submission and streaming
+  const chatForm = document.getElementById('chat-form');
+  const messageInput = document.getElementById('message-input');
+  const chatLog = document.getElementById('chat-log');
+
+  chatForm.addEventListener('submit', async function(e) {
+    e.preventDefault();
+    const message = messageInput.value;
+    if (!message) return;
+
+    // Display user's message
+    const userMessageDiv = document.createElement('div');
+    userMessageDiv.innerHTML = `<b>You:</b> ${message}`;
+    chatLog.appendChild(userMessageDiv);
+
+    // Create container for agent's streaming response
+    const agentMessageDiv = document.createElement('div');
+    agentMessageDiv.innerHTML = '<b>Agent:</b> <span class="agent-response"></span>';
+    chatLog.appendChild(agentMessageDiv);
+    const agentResponseSpan = agentMessageDiv.querySelector('.agent-response');
+
+    // Reset input
+    messageInput.value = '';
+
+    try {
+      const response = await fetch('/chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: `message=${encodeURIComponent(message)}`
+      });
+
+      const reader = response.body.getReader();
+      const decoder = new TextDecoder();
+
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) {
+          // After stream is complete, refresh the todo list
+          htmx.ajax("GET", "/partial/todos", { target: document.getElementById('todo-list'), swap: 'outerHTML' });
+          break;
+        }
+        agentResponseSpan.textContent += decoder.decode(value, { stream: true });
+      }
+    } catch (error) {
+      agentResponseSpan.textContent = 'Error fetching response.';
+      console.error('Streaming error:', error);
     }
   });
 </script>
