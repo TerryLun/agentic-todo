@@ -9,6 +9,22 @@ The primary goal was to experiment with core agentic patterns, such as equipping
 ![20250620-1](https://github.com/user-attachments/assets/a970417f-4dbb-4366-bc56-28e11b5fa84c)
 
 
+
+**Get your own OpenAI API key:**
+
+https://platform.openai.com/docs/overview
+
+then:
+
+Create a `.env` file in project root directory.  
+Add the following line to your `.env` file, replacing `sk-...` with your actual API key:
+
+OPENAI_API_KEY=sk-...
+
+(See `.env.example` for reference.)
+
+
+
 **Activate venv:**
 
 in project root, run:
@@ -21,13 +37,7 @@ windows cmd: `venv\Scripts\activate`
 
 when in virtual environment, run:
 
-`pip install fastapi uvicorn jinja2 langchain sqlalchemy sqlmodel httpx langchain-community openai`
-
-
-
-**Set openai api key:**
-
-windows cmd: `set OPENAI_API_KEY=sk-yourkeyhere`
+`pip install fastapi uvicorn jinja2 langchain sqlalchemy sqlmodel httpx langchain-community openai python-dotenv`
 
 
 
