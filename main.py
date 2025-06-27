@@ -9,7 +9,9 @@ from fastapi.templating import Jinja2Templates
 
 from models import init_db, get_todos, add_todo, update_todo, delete_todo
 from agent import handle_chat
+from dotenv import load_dotenv
 
+load_dotenv()
 app = FastAPI()
 app.mount("/static", StaticFiles(directory="static"), name="static")
 templates = Jinja2Templates(directory="templates")
