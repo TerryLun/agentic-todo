@@ -2,7 +2,7 @@
 <div id="todo-list">
   <ul id="todo-items">
     {% for todo in todos %}
-      <li class="flex items-center justify-between py-1">
+      <li class="flex items-center justify-between">
         <form hx-post="/edit/{{ todo.id }}" hx-target="#todo-list" hx-swap="outerHTML" class="flex flex-1 items-center gap-2">
           <input name="task" value="{{ todo.task }}" class="w-full border border-gray-300 rounded px-2 py-1 focus:outline-none focus:ring-2 focus:ring-green-400" />
           <button type="submit" class="bg-yellow-400 text-white px-3 py-1 rounded hover:bg-yellow-500 transition">Save</button>
