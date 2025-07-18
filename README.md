@@ -9,6 +9,7 @@ The primary goal was to experiment with core agentic patterns, such as equipping
 ![agentic-todo](https://github.com/user-attachments/assets/ab4f06d2-a9d6-47db-8cd8-c339c73fd4d2)
 
 
+**Setup:**
 
 **Get your own OpenAI API key:**
 
