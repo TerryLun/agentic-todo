@@ -1,16 +1,19 @@
 <!-- templates/partials/todo_items.html -->
 <div id="todo-list">
-  <ul id="todo-items">
+  <ul id="todo-items" class="space-y-0">
     {% for todo in todos %}
-      <li class="flex items-center justify-between">
+      <li class="flex items-center justify-between gap-2 py-0">
         <form hx-post="/edit/{{ todo.id }}" hx-target="#todo-list" hx-swap="outerHTML" class="flex flex-1 items-center gap-2">
-          <input name="task" value="{{ todo.task }}" class="w-full border border-gray-300 rounded px-2 py-1 focus:outline-none focus:ring-2 focus:ring-green-400" />
-          <button type="submit" class="bg-yellow-400 text-white px-3 py-1 rounded hover:bg-yellow-500 transition">Save</button>
+          <input name="task" value="{{ todo.task }}"
+            class="w-full bg-gray-900 text-white border border-gray-700 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-500" />
+          <button type="submit"
+            class="bg-yellow-500 hover:bg-yellow-600 text-white font-semibold px-4 py-2 rounded-lg transition shadow">Save</button>
         </form>
-        <form hx-post="/delete/{{ todo.id }}" hx-target="#todo-list" hx-swap="outerHTML" class="ml-2">
-          <button type="submit" class="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600 transition">🗑️</button>
+        <form hx-post="/delete/{{ todo.id }}" hx-target="#todo-list" hx-swap="outerHTML">
+          <button type="submit"
+            class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg transition shadow">🗑️</button>
         </form>
       </li>
     {% endfor %}
-  </ul>
+  </ul>  
 </div>

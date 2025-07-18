@@ -4,32 +4,41 @@
   <script src="https://unpkg.com/htmx.org@1.9.5"></script>
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-gray-100 min-h-screen">
-  <div class="max-w-4xl mx-auto mt-10 bg-white rounded-xl shadow-lg overflow-hidden flex flex-col md:flex-row">
-    <div class="md:w-1/2 border-b md:border-b-0 md:border-r border-gray-200 p-8 flex flex-col">
-      <h3 class="text-2xl font-bold mb-6 text-blue-600">Chat</h3>
-      <form id="chat-form" class="flex gap-2 mb-4">
-        <input id="message-input" name="message" autocomplete="off"
-          class="flex-1 border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
-          placeholder="Chat with agent and watch it work..." />
-        <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition">Send</button>
-      </form>
-      <div id="chat-log" class="flex-1 space-y-2 overflow-y-auto"></div>
-    </div>
-    <div class="md:w-1/2 p-8 flex flex-col">
-      <h3 class="text-2xl font-bold mb-6 text-green-600">Todos</h3>
-      <form 
-        hx-post="/add" 
-        hx-target="#todo-items" 
-        hx-swap="innerHTML"
-        hx-on::after-request="this.reset()"
-        class="flex gap-2 mb-6"
-      >
-        <input name="task" required class="flex-1 border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-400" placeholder="Add a new todo..." />
-        <button type="submit" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 transition">Add</button>
-      </form>
-      <div id="todo-list">
-        {% include "partials/todo_items.html" %}
+<body class="bg-gray-900 text-gray-100 min-h-screen font-sans">
+  <div class="max-w-5xl mx-auto mt-14 px-4">
+    <div class="bg-gray-800 rounded-2xl shadow-2xl overflow-hidden flex flex-col md:flex-row">
+      <!-- Chat Panel -->
+      <div class="md:w-1/2 border-b md:border-b-0 md:border-r border-gray-700 p-8 flex flex-col gap-4">
+        <h3 class="text-3xl font-extrabold text-blue-400">Chat</h3>
+        <form id="chat-form" class="flex gap-3">
+          <input id="message-input" name="message" autocomplete="off"
+            class="flex-1 bg-gray-900 text-white border border-gray-700 rounded-lg px-4 py-3 text-base focus:outline-none focus:ring-2 focus:ring-blue-500"
+            placeholder="Chat with agent and watch it work..." />
+          <button type="submit"
+            class="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-5 py-3 rounded-lg shadow transition">Send</button>
+        </form>
+        <div id="chat-log" class="flex-1 overflow-y-auto max-h-[300px] space-y-2 pr-1"></div>
+      </div>
+
+      <!-- Todos Panel -->
+      <div class="md:w-1/2 p-8 flex flex-col gap-4">
+        <h3 class="text-3xl font-extrabold text-green-400">Todos</h3>
+        <form 
+          hx-post="/add" 
+          hx-target="#todo-items" 
+          hx-swap="innerHTML"
+          hx-on::after-request="this.reset()"
+          class="flex gap-3"
+        >
+          <input name="task" required
+            class="flex-1 bg-gray-900 text-white border border-gray-700 rounded-lg px-4 py-3 text-base focus:outline-none focus:ring-2 focus:ring-green-500"
+            placeholder="Add a new todo..." />
+          <button type="submit"
+            class="bg-green-600 hover:bg-green-700 text-white font-semibold px-5 py-3 rounded-lg shadow transition">Add</button>
+        </form>
+        <div id="todo-list">
+          {% include "partials/todo_items.html" %}
+        </div>
       </div>
     </div>
   </div>
