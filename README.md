@@ -44,5 +44,5 @@ when in virtual environment, run:
 
 **Start local server:**
 
-uvicorn main:app --reload
+`uvicorn main:app --reload`
 
