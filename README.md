@@ -6,7 +6,7 @@ The primary goal was to experiment with core agentic patterns, such as equipping
 
 
 
-![agentic-todo](https://github.com/user-attachments/assets/92f15592-e0fb-4c38-87f2-00c59611dda5)
+![agentic-todo](https://github.com/user-attachments/assets/ab4f06d2-a9d6-47db-8cd8-c339c73fd4d2)
 
 
 
